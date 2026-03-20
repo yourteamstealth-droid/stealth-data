@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tv generator-info-name="StealthEPG">
+  <programme start="Thu Mar 19 2026 00:00:00 GMT0400 (Eastern Daylight Time)Sat Dec 30 1899 130000 GMT-0500 (Eastern Standard Time)00 +0000" channel="US PEACOCK 01">
+    <title>IMSA MUSTANG SEBRING R1</title>
+  </programme>
+  <programme start="Thu Mar 19 2026 00:00:00 GMT0400 (Eastern Daylight Time)Sat Dec 30 1899 145500 GMT-0500 (Eastern Standard Time)00 +0000" channel="US PEACOCK 02">
+    <title>IMSA CARRERA CUP SEBRING R1</title>
+  </programme>
+  <programme start="Thu Mar 19 2026 00:00:00 GMT0400 (Eastern Daylight Time)Sat Dec 30 1899 150000 GMT-0500 (Eastern Standard Time)00 +0000" channel="US PEACOCK 03">
+    <title>PREMIER LEAGUE DARTS: NIGHT 7</title>
+  </programme>
+  <programme start="Thu Mar 19 2026 00:00:00 GMT0400 (Eastern Daylight Time)Sat Dec 30 1899 180000 GMT-0500 (Eastern Standard Time)00 +0000" channel="US PEACOCK 04">
+    <title>IMSA SUPER TROFEO SEBRING R1</title>
+  </programme>
+</tv>
