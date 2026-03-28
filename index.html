@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stealth Sports Schedule</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0a0a;
+    color: #f0f0f0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 20px 24px 16px;
+    border-bottom: 2px solid #e94560;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #ffffff;
+  }
+
+  .logo span { color: #e94560; }
+
+  .date-display {
+    font-size: 13px;
+    color: #a0aec0;
+    font-weight: 500;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  #searchBox {
+    flex: 1;
+    padding: 11px 16px;
+    background: #1e1e2e;
+    border: 1.5px solid #333;
+    border-radius: 8px;
+    color: #f0f0f0;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  #searchBox:focus { border-color: #e94560; }
+  #searchBox::placeholder { color: #666; }
+
+  #refreshBtn {
+    padding: 11px 18px;
+    background: #e94560;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  #refreshBtn:hover { background: #c73652; }
+  #refreshBtn:disabled { background: #555; cursor: not-allowed; }
+
+  /* ── FILTER TABS ── */
+  .filter-scroll {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .filter-scroll::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    padding: 7px 14px;
+    background: #1e1e2e;
+    border: 1.5px solid #333;
+    border-radius: 20px;
+    color: #a0aec0;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  .filter-btn:hover {
+    border-color: #e94560;
+    color: #f0f0f0;
+  }
+
+  .filter-btn.active {
+    background: #e94560;
+    border-color: #e94560;
+    color: white;
+  }
+
+  /* ── STATUS BAR ── */
+  .status-bar {
+    padding: 8px 24px;
+    background: #111;
+    border-bottom: 1px solid #222;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .status-bar.loading { color: #f6c90e; }
+  .status-bar.error   { color: #e94560; }
+  .status-bar.success { color: #48bb78; }
+
+  /* ── RESULTS ── */
+  .results-container {
+    padding: 16px 24px 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ── GROUP HEADER ── */
+  .group-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #222;
+  }
+
+  .group-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    color: white;
+  }
+
+  .group-count {
+    font-size: 11px;
+    color: #555;
+  }
+
+  /* ── EVENT CARD ── */
+  .event-card {
+    display: grid;
+    grid-template-columns: 90px 70px 1fr;
+    align-items: center;
+    gap: 0;
+    padding: 11px 14px;
+    margin-bottom: 4px;
+    background: #141414;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    transition: all 0.15s;
+    cursor: default;
+  }
+
+  .event-card:hover {
+    background: #1a1a2a;
+    border-color: #333;
+    transform: translateX(2px);
+  }
+
+  .event-time {
+    font-size: 13px;
+    font-weight: 700;
+    color: #e94560;
+    white-space: nowrap;
+  }
+
+  .event-channel {
+    font-size: 11px;
+    color: #666;
+    font-weight: 600;
+    white-space: nowrap;
+    padding-left: 8px;
+  }
+
+  .event-title {
+    font-size: 14px;
+    color: #e8e8e8;
+    font-weight: 500;
+    padding-left: 12px;
+    border-left: 1px solid #222;
+  }
+
+  .event-title .highlight {
+    background: #e94560;
+    color: white;
+    padding: 0 3px;
+    border-radius: 3px;
+  }
+
+  /* ── EMPTY / ERROR STATES ── */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #444;
+  }
+
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state h3    { font-size: 18px; margin-bottom: 8px; color: #666; }
+  .empty-state p     { font-size: 14px; }
+
+  /* ── LOADING SPINNER ── */
+  .spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #444;
+    border-top-color: #e94560;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── GROUP COLOURS ── */
+  .colour-NHL      { background: #003f7f; }
+  .colour-MLB      { background: #c41e3a; }
+  .colour-MLS      { background: #005a8e; }
+  .colour-NBA      { background: #c84b00; }
+  .colour-NFL      { background: #013369; }
+  .colour-TSN      { background: #d4003f; }
+  .colour-SN       { background: #e87722; }
+  .colour-DAZN     { background: #f8ff00; color: #000 !important; }
+  .colour-VICTORY  { background: #6b2d8b; }
+  .colour-BTN      { background: #003087; }
+  .colour-ESPN     { background: #cc0000; }
+  .colour-PARAMOUNT{ background: #0057a8; }
+  .colour-FLSP     { background: #00843d; }
+  .colour-PEACOCK  { background: #000000; border: 1px solid #444; }
+  .colour-PPVUFC   { background: #d20a0a; }
+  .colour-PPVBOX   { background: #8b0000; }
+  .colour-PPVEVT   { background: #4a0080; }
+  .colour-PPVNET   { background: #e50914; }
+  .colour-OTHER    { background: #333; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .header { padding: 14px 16px 12px; }
+    .results-container { padding: 12px 16px 24px; }
+    .logo { font-size: 18px; }
+    .event-card {
+      grid-template-columns: 80px 60px 1fr;
+      padding: 9px 10px;
+    }
+    .event-title { font-size: 13px; }
+  }
+
+  /* ── TV / LARGE SCREEN ── */
+  @media (min-width: 1280px) {
+    .event-card { padding: 13px 18px; }
+    .event-title { font-size: 15px; }
+    .event-time  { font-size: 14px; }
+    #searchBox   { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">⭐ STEALTH <span>SPORTS</span></div>
+    <div class="date-display" id="dateDisplay"></div>
+  </div>
+  <div class="search-row">
+    <input type="text" id="searchBox"
+           placeholder="🔍  Search by team, event, sport, channel..."
+           autocomplete="off" spellcheck="false">
+    <button id="refreshBtn" onclick="loadAllData()">↻ Refresh</button>
+  </div>
+  <div class="filter-scroll" id="filterRow"></div>
+</div>
+
+<div class="status-bar" id="statusBar">
+  <span id="statusText">Initialising...</span>
+  <span id="countText"></span>
+</div>
+
+<div class="results-container" id="resultsContainer">
+  <div class="empty-state">
+    <div class="icon">⏳</div>
+    <h3>Loading schedule...</h3>
+    <p>Fetching today's events from all channel groups</p>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURATION
+// ============================================================
+var SPREADSHEET_ID = '1Ghnu7b647kksvXeKn8xNtBBa4CjYfZXwlfc-cdnCQS8';
+
+var TABS = [
+  { name: 'NHL',        label: 'NHL',       colour: 'colour-NHL'      },
+  { name: 'MLB',        label: 'MLB',       colour: 'colour-MLB'      },
+  { name: 'MLS',        label: 'MLS',       colour: 'colour-MLS'      },
+  { name: 'NBA',        label: 'NBA',       colour: 'colour-NBA'      },
+  { name: 'NFL',        label: 'NFL',       colour: 'colour-NFL'      },
+  { name: 'TSN+',       label: 'TSN+',      colour: 'colour-TSN'      },
+  { name: 'SN+',        label: 'SN+',       colour: 'colour-SN'       },
+  { name: 'DAZN',       label: 'DAZN',      colour: 'colour-DAZN'     },
+  { name: 'VICTORY+',   label: 'VICTORY+',  colour: 'colour-VICTORY'  },
+  { name: 'BTN+',       label: 'BTN+',      colour: 'colour-BTN'      },
+  { name: 'ESPN+',      label: 'ESPN+',     colour: 'colour-ESPN'     },
+  { name: 'PARAMOUNT',  label: 'PARAM',     colour: 'colour-PARAMOUNT'},
+  { name: 'FLSP',       label: 'FLSP',      colour: 'colour-FLSP'     },
+  { name: 'PEACOCK',    label: 'PEACOCK',   colour: 'colour-PEACOCK'  },
+  { name: 'PPV UFC',    label: 'PPV UFC',   colour: 'colour-PPVUFC'   },
+  { name: 'PPV BOXING', label: 'PPV BOX',   colour: 'colour-PPVBOX'   },
+  { name: 'PPV EVENTS', label: 'PPV EVTS',  colour: 'colour-PPVEVT'   },
+  { name: 'PPV NETFLIX',label: 'NETFLIX',   colour: 'colour-PPVNET'   },
+  { name: 'OTHER',      label: 'OTHER',     colour: 'colour-OTHER'    }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+var allEvents      = [];
+var activeFilter   = 'ALL';
+var searchTerm     = '';
+var loadedCount    = 0;
+var totalTabs      = TABS.length;
+var isLoading      = false;
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('DOMContentLoaded', function() {
+  setDateDisplay();
+  buildFilterRow();
+  bindSearch();
+  loadAllData();
+});
+
+function setDateDisplay() {
+  var now  = new Date();
+  var days = ['Sunday','Monday','Tuesday','Wednesday',
+              'Thursday','Friday','Saturday'];
+  var months = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+  document.getElementById('dateDisplay').textContent =
+    days[now.getDay()] + ', ' +
+    months[now.getMonth()] + ' ' +
+    now.getDate() + ', ' +
+    now.getFullYear();
+}
+
+// ============================================================
+// FILTER ROW
+// ============================================================
+function buildFilterRow() {
+  var row = document.getElementById('filterRow');
+  row.innerHTML = '';
+
+  var allBtn = document.createElement('button');
+  allBtn.className   = 'filter-btn active';
+  allBtn.textContent = 'ALL';
+  allBtn.dataset.filter = 'ALL';
+  allBtn.addEventListener('click', function() { setFilter('ALL'); });
+  row.appendChild(allBtn);
+
+  TABS.forEach(function(tab) {
+    var btn = document.createElement('button');
+    btn.className      = 'filter-btn';
+    btn.textContent    = tab.label;
+    btn.dataset.filter = tab.name;
+    btn.addEventListener('click', function() { setFilter(tab.name); });
+    row.appendChild(btn);
+  });
+}
+
+function setFilter(filterName) {
+  activeFilter = filterName;
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.dataset.filter === filterName);
+  });
+  renderEvents();
+}
+
+// ============================================================
+// SEARCH
+// ============================================================
+function bindSearch() {
+  var box = document.getElementById('searchBox');
+  var timer;
+  box.addEventListener('input', function() {
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      searchTerm = box.value.trim().toLowerCase();
+      renderEvents();
+    }, 180);
+  });
+}
+
+// ============================================================
+// LOAD ALL TAB DATA
+// ============================================================
+function loadAllData() {
+  if (isLoading) return;
+  isLoading   = true;
+  allEvents   = [];
+  loadedCount = 0;
+
+  var btn = document.getElementById('refreshBtn');
+  btn.disabled    = true;
+  btn.textContent = '↻ Loading...';
+
+  setStatus('loading', '<span class="spinner"></span>Loading schedule data...', '');
+
+  TABS.forEach(function(tab) {
+    fetchTab(tab);
+  });
+}
+
+function fetchTab(tab) {
+  var url = 'https://docs.google.com/spreadsheets/d/' +
+            SPREADSHEET_ID +
+            '/gviz/tq?tqx=out:json&sheet=' +
+            encodeURIComponent(tab.name);
+
+  fetch(url)
+    .then(function(res) { return res.text(); })
+    .then(function(text) {
+      parseTabData(text, tab);
+    })
+    .catch(function(err) {
+      console.warn('Failed to load tab: ' + tab.name, err);
+      tabLoadComplete();
+    });
+}
+
+function parseTabData(text, tab) {
+  try {
+    // Google wraps the JSON in /*O_o*/ google.visualization.Query.setResponse(...)
+    var jsonStart = text.indexOf('{');
+    var jsonEnd   = text.lastIndexOf('}');
+    if (jsonStart === -1 || jsonEnd === -1) {
+      tabLoadComplete();
+      return;
+    }
+
+    var json = JSON.parse(text.substring(jsonStart, jsonEnd + 1));
+    var rows = json.table && json.table.rows ? json.table.rows : [];
+
+    rows.forEach(function(row) {
+      if (!row.c) return;
+
+      var channelRaw = row.c[0] ? String(row.c[0].v || '').trim() : '';
+      var titleRaw   = row.c[1] ? String(row.c[1].v || '').trim() : '';
+      var dateRaw    = row.c[2] ? String(row.c[2].v || '').trim() : '';
+      var timeRaw    = row.c[3] ? String(row.c[3].v || '').trim() : '';
+
+      // Skip header row and empty rows
+      if (!channelRaw || !titleRaw) return;
+      if (channelRaw.toLowerCase() === 'channel #') return;
+      if (titleRaw.toLowerCase()   === 'event title') return;
+      if (channelRaw === '[ERROR]') return;
+
+      // Clean apostrophe prefix from time (Google Sheets stores as 'HH:MM)
+      var cleanTime = timeRaw.replace(/^'/, '').trim();
+
+      // Parse sort time for ordering
+      var sortMinutes = parseTimeToMinutes(cleanTime);
+
+      allEvents.push({
+        tab:        tab.name,
+        tabLabel:   tab.label,
+        colour:     tab.colour,
+        channel:    channelRaw,
+        title:      titleRaw,
+        date:       dateRaw,
+        time:       cleanTime,
+        sortMins:   sortMinutes,
+        searchText: (channelRaw + ' ' + titleRaw + ' ' +
+                     tab.name + ' ' + cleanTime).toLowerCase()
+      });
+    });
+
+  } catch (err) {
+    console.warn('Parse error for tab: ' + tab.name, err);
+  }
+
+  tabLoadComplete();
+}
+
+function tabLoadComplete() {
+  loadedCount++;
+  setStatus(
+    'loading',
+    '<span class="spinner"></span>Loading... (' +
+    loadedCount + ' / ' + totalTabs + ' groups)',
+    ''
+  );
+
+  if (loadedCount >= totalTabs) {
+    isLoading = false;
+    var btn = document.getElementById('refreshBtn');
+    btn.disabled    = false;
+    btn.textContent = '↻ Refresh';
+
+    // Sort all events by time
+    allEvents.sort(function(a, b) { return a.sortMins - b.sortMins; });
+
+    var total = allEvents.length;
+    setStatus(
+      'success',
+      '✅ Schedule loaded — ' + total + ' events across ' + totalTabs + ' channel groups',
+      'Last updated: ' + new Date().toLocaleTimeString()
+    );
+
+    renderEvents();
+  }
+}
+
+// ============================================================
+// TIME PARSER — converts "1:00 PM ET" to sortable minutes
+// ============================================================
+function parseTimeToMinutes(timeStr) {
+  if (!timeStr || timeStr === 'N/A') return 9999;
+  var clean = timeStr.replace(/ET/i, '').trim();
+  var match = clean.match(/(\d{1,2}):(\d{2})\s*([AP]M)/i);
+  if (!match) return 9999;
+  var h    = parseInt(match[1], 10);
+  var m    = parseInt(match[2], 10);
+  var ampm = match[3].toUpperCase();
+  if (ampm === 'PM' && h < 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+  return (h * 60) + m;
+}
+
+// ============================================================
+// RENDER EVENTS
+// ============================================================
+function renderEvents() {
+  var container = document.getElementById('resultsContainer');
+  var filtered  = filterEvents();
+
+  if (filtered.length === 0) {
+    container.innerHTML =
+      '<div class="empty-state">' +
+      '<div class="icon">' + (searchTerm ? '🔍' : '📅') + '</div>' +
+      '<h3>' + (searchTerm ? 'No results found' : 'No events scheduled') + '</h3>' +
+      '<p>' + (searchTerm
+        ? 'No events match "' + escapeHtml(searchTerm) + '"'
+        : 'Check back after the daily schedule is posted') +
+      '</p></div>';
+
+    document.getElementById('countText').textContent = '0 events';
+    return;
+  }
+
+  document.getElementById('countText').textContent =
+    filtered.length + ' event' + (filtered.length !== 1 ? 's' : '');
+
+  // Group by tab
+  var groups = {};
+  var groupOrder = [];
+
+  filtered.forEach(function(ev) {
+    if (!groups[ev.tab]) {
+      groups[ev.tab] = [];
+      groupOrder.push(ev.tab);
+    }
+    groups[ev.tab].push(ev);
+  });
+
+  var html = '';
+
+  groupOrder.forEach(function(tabName) {
+    var events = groups[tabName];
+    var tab    = TABS.find(function(t) { return t.name === tabName; });
+    if (!tab) return;
+
+    html += '<div class="group-header">';
+    html += '<span class="group-label ' + tab.colour + '">' +
+            escapeHtml(tab.label) + '</span>';
+    html += '<span class="group-count">' + events.length +
+            ' event' + (events.length !== 1 ? 's' : '') + '</span>';
+    html += '</div>';
+
+    events.forEach(function(ev) {
+      html += buildEventCard(ev);
+    });
+  });
+
+  container.innerHTML = html;
+}
+
+// ============================================================
+// BUILD EVENT CARD
+// ============================================================
+function buildEventCard(ev) {
+  var displayTitle = ev.title;
+
+  // Highlight search term in title
+  if (searchTerm && searchTerm.length > 1) {
+    var escaped = escapeRegex(searchTerm);
+    var re      = new RegExp('(' + escaped + ')', 'gi');
+    displayTitle = escapeHtml(displayTitle).replace(
+      re,
+      '<span class="highlight">$1</span>'
+    );
+  } else {
+    displayTitle = escapeHtml(displayTitle);
+  }
+
+  return '<div class="event-card">' +
+    '<div class="event-time">'    + escapeHtml(ev.time)    + '</div>' +
+    '<div class="event-channel">' + escapeHtml(ev.channel) + '</div>' +
+    '<div class="event-title">'   + displayTitle           + '</div>' +
+    '</div>';
+}
+
+// ============================================================
+// FILTER EVENTS
+// ============================================================
+function filterEvents() {
+  return allEvents.filter(function(ev) {
+    // Tab filter
+    if (activeFilter !== 'ALL' && ev.tab !== activeFilter) return false;
+
+    // Search filter
+    if (searchTerm && searchTerm.length > 0) {
+      if (ev.searchText.indexOf(searchTerm) === -1) return false;
+    }
+
+    return true;
+  });
+}
+
+// ============================================================
+// STATUS BAR
+// ============================================================
+function setStatus(type, message, countText) {
+  var bar  = document.getElementById('statusBar');
+  var text = document.getElementById('statusText');
+  var cnt  = document.getElementById('countText');
+
+  bar.className    = 'status-bar ' + type;
+  text.innerHTML   = message;
+  if (countText !== undefined) cnt.textContent = countText;
+}
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g,  '&amp;')
+    .replace(/</g,  '&lt;')
+    .replace(/>/g,  '&gt;')
+    .replace(/"/g,  '&quot;')
+    .replace(/'/g,  '&#039;');
+}
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+</script>
+</body>
+</html>
