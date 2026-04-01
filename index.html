@@ -3,24 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#1a4f8b">
+<meta name="theme-color" content="#135482">
 <title>STEALTH SPORTS PREMIUM</title>
+<link rel="manifest" href="manifest.json">
 <style>
 /* ─── BASE & LIGHT THEME ─── */
 :root {
-  --bg-main: #f4f7f6;
-  --bg-white: #ffffff;
-  --primary-blue: #135482;
-  --secondary-blue: #1b6ca8;
+  --bg-main: #f4f7f6; --bg-white: #ffffff;
+  --primary-blue: #135482; --secondary-blue: #1b6ca8;
   --accent-red: #e8000d;
-  --text-dark: #222222;
-  --text-muted: #666666;
+  --text-dark: #222222; --text-muted: #666666;
   --border-light: #e0e4e8;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
 body { background-color: var(--bg-main); color: var(--text-dark); overflow-x: hidden; }
 a { text-decoration: none; color: inherit; }
-ul { list-style: none; }
 
 /* ─── LOGIN SCREEN ─── */
 #loginScreen { position: fixed; inset: 0; z-index: 9999; background: #f4f7f6; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
@@ -28,6 +25,7 @@ ul { list-style: none; }
 .login-logo { width: 120px; height: 120px; margin-bottom: 20px; object-fit: contain; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
 .login-box h2 { color: var(--primary-blue); font-size: 18px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
 .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid var(--border-light); border-radius: 4px; text-align: center; font-size: 16px; letter-spacing: 2px; }
+.login-box input:focus { outline: none; border-color: var(--secondary-blue); }
 .login-box button { width: 100%; padding: 12px; background: var(--primary-blue); color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; }
 .login-box button:hover { background: var(--secondary-blue); }
 #loginErr { color: var(--accent-red); font-size: 12px; margin-top: 10px; min-height: 15px; }
@@ -39,10 +37,9 @@ ul { list-style: none; }
 .top-header { background-color: var(--primary-blue); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
 .brand-area { display: flex; align-items: center; gap: 15px; }
 .brand-logo { height: 40px; border-radius: 8px; }
-.brand-title { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+.brand-title { font-size: 20px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
 .header-controls { display: flex; align-items: center; gap: 15px; font-size: 13px; }
 .lang-btn { background: transparent; border: 1px solid rgba(255,255,255,0.5); color: white; padding: 3px 8px; border-radius: 3px; cursor: pointer; font-weight: bold; }
-.lang-btn:hover { background: rgba(255,255,255,0.1); }
 .clock-area { display: flex; flex-direction: column; align-items: flex-end; }
 #liveClock { font-weight: bold; font-size: 14px; }
 #tzSelect { background: transparent; color: rgba(255,255,255,0.8); border: none; font-size: 11px; outline: none; cursor: pointer; margin-top: 2px; }
@@ -51,22 +48,22 @@ ul { list-style: none; }
 /* ─── SEARCH BAR ─── */
 .search-bar { background-color: var(--secondary-blue); padding: 10px 20px; display: flex; justify-content: center; }
 .search-input-wrapper { position: relative; width: 100%; max-width: 600px; display: flex; }
-.search-input-wrapper input { width: 100%; padding: 10px 15px; border: none; border-radius: 4px 0 0 4px; font-size: 14px; outline: none; }
-.search-btn { background: var(--accent-red); color: white; border: none; padding: 0 20px; border-radius: 0 4px 4px 0; font-weight: bold; cursor: pointer; }
+.search-input-wrapper input { width: 100%; padding: 10px 15px; border: none; border-radius: 4px; font-size: 14px; outline: none; text-align: center;}
+.search-input-wrapper input:focus { box-shadow: 0 0 0 2px var(--accent-red); }
 
-/* ─── MAIN NAV (SPORTS ICONS) ─── */
-.main-nav { background: var(--primary-blue); display: flex; overflow-x: auto; padding: 0 10px; scrollbar-width: none; border-bottom: 3px solid var(--accent-red); }
+/* ─── MAIN NAV ─── */
+.main-nav { background: var(--primary-blue); display: flex; overflow-x: auto; padding: 0 10px; scrollbar-width: none; border-bottom: 3px solid var(--accent-red); align-items: center;}
 .main-nav::-webkit-scrollbar { display: none; }
-.nav-tab { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(255,255,255,0.7); padding: 10px 15px; cursor: pointer; transition: 0.2s; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+.nav-tab { flex: 0 0 auto; color: rgba(255,255,255,0.7); padding: 12px 15px; cursor: pointer; transition: 0.2s; font-size: 12px; font-weight: bold; text-transform: uppercase; }
 .nav-tab:hover { color: white; background: rgba(255,255,255,0.05); }
 .nav-tab.active { color: white; background: var(--secondary-blue); border-bottom: 3px solid white; margin-bottom: -3px; }
-.nav-icon { font-size: 20px; margin-bottom: 4px; }
+.nav-select { background: transparent; color: rgba(255,255,255,0.7); border: none; font-size: 12px; font-weight: bold; text-transform: uppercase; cursor: pointer; outline: none; padding: 12px 15px; }
+.nav-select option { color: black; }
 
 /* ─── DATE SLIDER ─── */
 .date-slider { background: var(--secondary-blue); display: flex; overflow-x: auto; padding: 10px; gap: 5px; scrollbar-width: none; }
 .date-slider::-webkit-scrollbar { display: none; }
 .date-card { flex: 0 0 auto; width: 65px; background: rgba(255,255,255,0.1); border-radius: 4px; color: white; text-align: center; padding: 8px 0; cursor: pointer; border: 1px solid transparent; }
-.date-card:hover { background: rgba(255,255,255,0.2); }
 .date-card.active { background: white; color: var(--primary-blue); border-color: white; font-weight: bold; }
 .date-day { font-size: 11px; text-transform: uppercase; margin-bottom: 2px; }
 .date-num { font-size: 16px; font-weight: bold; }
@@ -75,61 +72,63 @@ ul { list-style: none; }
 .content-wrapper { max-width: 1000px; margin: 0 auto; width: 100%; padding: 20px; }
 
 /* ─── BILLBOARD ANNOUNCEMENT ─── */
-.billboard { background: var(--bg-white); border: 1px solid var(--border-light); border-radius: 8px; padding: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; display: none; }
-.bb-left h3 { font-size: 22px; color: var(--text-dark); margin-bottom: 5px; }
-.bb-left p { font-size: 14px; color: var(--text-muted); }
-.bb-right a { background: var(--secondary-blue); color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; transition: 0.2s; display: inline-block; }
-.bb-right a:hover { background: var(--primary-blue); }
+.billboard { background: var(--bg-white); border: 1px solid var(--border-light); border-radius: 8px; padding: 20px; display: none; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; border-left: 4px solid var(--accent-red);}
+.bb-left h3 { font-size: 18px; color: var(--primary-blue); margin-bottom: 5px; text-transform: uppercase; font-weight: 800;}
+.bb-left p { font-size: 14px; color: var(--text-dark); font-weight: 500;}
+.bb-right a { background: var(--secondary-blue); color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 13px; transition: 0.2s; display: inline-block; white-space: nowrap;}
 
 /* ─── SECONDARY MENUS ─── */
 .sub-menus { background: var(--bg-white); border: 1px solid var(--border-light); border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
-.menu-row { display: flex; border-bottom: 1px solid var(--border-light); }
-.menu-item { padding: 12px 20px; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; text-transform: uppercase; }
-.menu-item.active { color: var(--primary-blue); border-bottom: 2px solid var(--primary-blue); margin-bottom: -1px; }
+.menu-row { display: flex; border-bottom: 1px solid var(--border-light); overflow-x: auto; scrollbar-width: none;}
+.menu-row::-webkit-scrollbar { display: none; }
+.menu-item { padding: 12px 20px; font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; text-transform: uppercase; white-space: nowrap;}
+.menu-item.active { color: var(--primary-blue); border-bottom: 3px solid var(--primary-blue); margin-bottom: -1px; }
 
 .action-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #fafafa; border-bottom: 1px solid var(--border-light); }
-.action-left { font-size: 14px; font-weight: 600; color: var(--primary-blue); display: flex; align-items: center; gap: 8px; }
-.action-left span { cursor: pointer; }
+.action-left { font-size: 14px; font-weight: 700; color: var(--primary-blue); display: flex; align-items: center; gap: 8px; }
 
-.filter-row { display: flex; gap: 15px; padding: 12px 20px; background: var(--bg-white); overflow-x: auto; scrollbar-width: none; }
+.filter-row { display: flex; align-items: center; gap: 15px; padding: 12px 20px; background: var(--bg-white); overflow-x: auto; scrollbar-width: none; }
 .filter-row::-webkit-scrollbar { display: none; }
-.f-btn { background: #eee; border: 1px solid #ddd; padding: 6px 15px; border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; white-space: nowrap; }
+.f-btn { background: #eee; border: 1px solid #ddd; padding: 6px 15px; border-radius: 4px; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; white-space: nowrap; text-transform: uppercase;}
 .f-btn.active { background: var(--primary-blue); color: white; border-color: var(--primary-blue); }
-#regionSelect { background: #eee; border: 1px solid #ddd; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; color: var(--text-dark); outline: none; cursor: pointer; }
+#regionSelect { background: #eee; border: 1px solid #ddd; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 700; color: var(--text-dark); outline: none; cursor: pointer; text-transform: uppercase;}
 
 /* ─── SCHEDULE LIST ─── */
-.schedule-container { background: var(--bg-white); border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-.s-row { display: flex; align-items: center; border-bottom: 1px solid #eee; padding: 12px 15px; transition: background 0.15s; }
+.schedule-container { background: var(--bg-white); border: 1px solid var(--border-light); border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+.s-row { display: flex; align-items: center; border-bottom: 1px solid #eee; padding: 15px; transition: background 0.15s; }
 .s-row:hover { background: #f9f9f9; }
 .s-row:last-child { border-bottom: none; }
 
-.time-col { width: 85px; flex-shrink: 0; text-align: center; }
-.time-box { background: #f0f0f0; border: 1px solid #ddd; border-radius: 4px; padding: 6px 4px; font-size: 12px; font-weight: 700; color: #444; display: inline-block; width: 100%; }
+.time-col { width: 100px; flex-shrink: 0; text-align: center; }
+.time-box { background: #f0f0f0; border: 1px solid #ddd; border-radius: 4px; padding: 6px 4px; font-size: 11px; font-weight: 800; color: #444; display: inline-block; width: 100%; }
 .time-box.live { background: var(--accent-red); border-color: var(--accent-red); color: white; animation: pulse 2s infinite; }
 
-.match-col { flex-grow: 1; padding: 0 15px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
-.match-title { font-size: 14px; font-weight: 600; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 8px;}
-.match-title img { height: 18px; width: 18px; object-fit: contain; }
-.league-name { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 4px; text-transform: uppercase; }
+.match-col { flex-grow: 1; padding: 0 15px; display: flex; flex-direction: column; justify-content: center; }
+.matchup { display: flex; align-items: center; justify-content: flex-start; gap: 15px; font-size: 15px; font-weight: 700; color: var(--text-dark); }
+.team-wrap { display: flex; align-items: center; gap: 8px; }
+.team-logo { width: 24px; height: 24px; object-fit: contain; }
+.score-text { color: var(--primary-blue); font-weight: 900; font-size: 16px; margin: 0 5px; }
+.vs-text { color: var(--text-muted); font-size: 12px; font-weight: bold; margin: 0 5px; }
+
+.league-name { font-size: 11px; color: var(--text-muted); font-weight: 700; margin-top: 6px; text-transform: uppercase; }
 
 .chan-col { width: auto; flex-shrink: 0; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
-.stealth-badge { background: var(--accent-red); color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; white-space: nowrap; box-shadow: 0 2px 4px rgba(232,0,13,0.3); }
-.prov-badge { border: 1px solid #ddd; color: var(--text-muted); padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+.stealth-badge { background: var(--accent-red); color: white; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 800; white-space: nowrap; box-shadow: 0 2px 4px rgba(232,0,13,0.2); text-transform: uppercase;}
+.prov-badge { border: 1px solid #ddd; color: var(--text-muted); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; white-space: nowrap; text-transform: uppercase;}
 
-.status-msg { padding: 40px; text-align: center; font-size: 15px; color: var(--text-muted); }
+.status-msg { padding: 40px; text-align: center; font-size: 15px; color: var(--text-muted); font-weight: bold;}
 .spinner { display: inline-block; width: 24px; height: 24px; border: 3px solid #eee; border-top-color: var(--primary-blue); border-radius: 50%; animation: spin 1s linear infinite; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-/* Responsive adjustments */
-@media(max-width: 600px) {
-  .brand-title { font-size: 16px; }
+@media(max-width: 768px) {
   .billboard { flex-direction: column; text-align: center; gap: 15px; }
-  .s-row { flex-wrap: wrap; padding: 10px; }
-  .time-col { width: 75px; }
-  .match-col { padding: 0 10px; width: calc(100% - 75px); }
-  .chan-col { width: 100%; flex-direction: row; justify-content: flex-start; padding-top: 8px; margin-top: 8px; border-top: 1px dashed #eee; padding-left: 85px;}
+  .s-row { flex-wrap: wrap; padding: 12px; }
+  .time-col { width: 85px; }
+  .match-col { padding: 0 0 0 10px; width: calc(100% - 85px); }
+  .matchup { flex-wrap: wrap; gap: 6px; }
+  .chan-col { width: 100%; flex-direction: row; justify-content: flex-start; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; padding-left: 95px;}
 }
 </style>
 </head>
@@ -148,12 +147,11 @@ ul { list-style: none; }
 
 <!-- APP WRAPPER -->
 <div id="app">
-
   <!-- TOP HEADER -->
   <div class="top-header">
     <div class="brand-area">
       <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
-      <div class="brand-title">STEALTH SPORTS</div>
+      <div class="brand-title">STEALTH SPORTS PREMIUM</div>
     </div>
     <div class="header-controls">
       <button class="lang-btn" onclick="toggleLang()" id="langBtn">FR</button>
@@ -161,30 +159,31 @@ ul { list-style: none; }
         <div id="liveClock">00:00:00</div>
         <select id="tzSelect" onchange="renderSchedule()"></select>
       </div>
+      <span onclick="doLogout()" style="cursor:pointer; font-size:16px;" title="Logout">⏻</span>
     </div>
+  </div>
+
+  <!-- MAIN NAV (SPORTS) -->
+  <div class="main-nav" id="mainNav">
+    <!-- Populated by JS -->
   </div>
 
   <!-- SEARCH BAR -->
   <div class="search-bar">
     <div class="search-input-wrapper">
       <input type="text" id="searchBox" placeholder="Search events, teams, channels...">
-      <button class="search-btn">🔍</button>
     </div>
   </div>
-
-  <!-- MAIN NAV (ICONS) -->
-  <div class="main-nav" id="mainNav"></div>
 
   <!-- DATE SLIDER -->
   <div class="date-slider" id="dateSlider"></div>
 
   <div class="content-wrapper">
-    
     <!-- BILLBOARD -->
     <div class="billboard" id="billboard">
       <div class="bb-left">
-        <h3 id="bbMsg"></h3>
-        <p id="txt-announce-sub">Important Update</p>
+        <h3 id="txt-announce">📣 ANNOUNCEMENT</h3>
+        <p id="bbMsg"></p>
       </div>
       <div class="bb-right">
         <a href="#" target="_blank" id="bbLink" style="display:none;"></a>
@@ -203,7 +202,7 @@ ul { list-style: none; }
       <div class="action-row">
         <div class="action-left">
           <span id="txt-myleagues">All events for My Leagues</span>
-          <span onclick="alert('Manage leagues feature coming soon.')">⚙️</span>
+          <span onclick="alert('Manage leagues feature coming soon.')" style="color:var(--text-muted);">⚙️</span>
         </div>
       </div>
 
@@ -226,7 +225,6 @@ ul { list-style: none; }
     <div class="schedule-container" id="scheduleContent">
       <div class="status-msg"><div class="spinner"></div><br><br><span id="txt-loading">Loading live data...</span></div>
     </div>
-
   </div>
 </div>
 
@@ -241,37 +239,42 @@ const TSDB_KEY = "385560";
 const i18n = {
   en: {
     logHead: "STEALTH SPORTS PREMIUM", logBtn: "ACCESS GUIDE", err: "Invalid Code",
-    all: "All Sports", my: "My Sports", amfb: "Am. Football", base: "Baseball",
-    bball: "Basketball", hock: "Ice Hockey", foot: "Football", ten: "Tennis", golf: "Golf", oth: "Other",
+    all: "All Sports", my: "My Sports", fball: "Football", base: "Baseball",
+    bball: "Basketball", hock: "Hockey", soc: "Soccer", ten: "Tennis", golf: "Golf",
     guide: "Guide", leagues: "Leagues", teams: "Teams", upcoming: "Upcoming",
     myLgs: "All events for My Leagues", allFil: "All", myFil: "My Sports",
     search: "Search events, teams, channels...", loading: "Loading live data...",
     noEvents: "No matches found for the selected day.", watch: "WATCH ON:", prov: "PROVIDER:",
-    today: "Today"
+    today: "Today", announce: "📣 ANNOUNCEMENT"
   },
   fr: {
     logHead: "STEALTH SPORTS PREMIUM", logBtn: "ACCÉDER AU GUIDE", err: "Code Invalide",
-    all: "Tous les Sports", my: "Mes Sports", amfb: "F. Américain", base: "Baseball",
-    bball: "Basket", hock: "Hockey", foot: "Foot", ten: "Tennis", golf: "Golf", oth: "Autre",
+    all: "Tous les Sports", my: "Mes Sports", fball: "F. Américain", base: "Baseball",
+    bball: "Basket", hock: "Hockey", soc: "Foot", ten: "Tennis", golf: "Golf",
     guide: "Guide", leagues: "Ligues", teams: "Équipes", upcoming: "À Venir",
     myLgs: "Tous les événements de Mes Ligues", allFil: "Tous", myFil: "Mes Sports",
     search: "Rechercher événements, équipes...", loading: "Chargement des données...",
     noEvents: "Aucun match trouvé pour ce jour.", watch: "DIFFUSÉ SUR:", prov: "FOURNISSEUR:",
-    today: "Auj."
+    today: "Auj.", announce: "📣 ANNONCE"
   }
 };
 
-const CATEGORIES =[
-  { id: "ALL",   icon: "📺", en: "All Sports", fr: "Tous les Sports", match: [] },
-  { id: "MY",    icon: "⭐", en: "My Sports", fr: "Mes Sports", match:[] },
-  { id: "AMFB",  icon: "🏈", en: "Am. Football", fr: "F. Américain", match: ["NFL"] },
-  { id: "BASE",  icon: "⚾", en: "Baseball", fr: "Baseball", match: ["MLB"] },
-  { id: "BBALL", icon: "🏀", en: "Basketball", fr: "Basket", match:["NBA","NCAAB"] },
-  { id: "HOCK",  icon: "🏒", en: "Ice Hockey", fr: "Hockey", match: ["NHL"] },
-  { id: "FOOT",  icon: "⚽", en: "Football", fr: "Foot", match:["MLS","English Premier League","Spanish La Liga","Italian Serie A","French Ligue 1","German Bundesliga","UEFA Champions League"] },
-  { id: "TEN",   icon: "🎾", en: "Tennis", fr: "Tennis", match: ["ATP World Tour"] },
-  { id: "GOLF",  icon: "⛳", en: "Golf", fr: "Golf", match: ["PGA Tour"] },
-  { id: "OTH",   icon: "➕", en: "Other", fr: "Autre", match:["Formula 1", "PPV UFC", "PPV BOXING", "PPV EVENTS"] }
+const MAIN_CATEGORIES =[
+  { id: "ALL",   en: "All Sports", fr: "Tous les Sports", match: [] },
+  { id: "MY",    en: "My Sports",  fr: "Mes Sports", match:[] },
+  { id: "FBALL", en: "Football",   fr: "F. Américain", match: ["NFL"] },
+  { id: "BASE",  en: "Baseball",   fr: "Baseball", match:["MLB"] },
+  { id: "BBALL", en: "Basketball", fr: "Basket", match:["NBA","NCAAB"] },
+  { id: "HOCK",  en: "Hockey",     fr: "Hockey", match: ["NHL"] },
+  { id: "SOC",   en: "Soccer",     fr: "Foot", match:["MLS","English Premier League","Spanish La Liga","Italian Serie A","French Ligue 1","German Bundesliga","UEFA Champions League"] },
+  { id: "TEN",   en: "Tennis",     fr: "Tennis", match: ["ATP World Tour"] },
+  { id: "GOLF",  en: "Golf",       fr: "Golf", match: ["PGA Tour"] }
+];
+
+const OTHER_CATEGORIES =[
+  { id: "FIGHT", en: "Combat",     fr: "Combat", match:["PPV UFC","PPV BOXING","PPV EVENTS"] },
+  { id: "RACE",  en: "Racing",     fr: "Course", match:["Formula 1"] },
+  { id: "NET",   en: "Network",    fr: "Réseau", match:["TSN+","SN+","ESPN+","FLSP","DAZN","BTN+","VICTORY+","PARAMOUNT","PEACOCK","PPV NETFLIX","OTHER"] }
 ];
 
 let state = {
@@ -321,13 +324,15 @@ function doLogin() {
   }
 }
 
+function doLogout() { sessionStorage.removeItem('stealth_auth'); location.reload(); }
+
 function toggleLang() {
   state.lang = state.lang === 'en' ? 'fr' : 'en';
   localStorage.setItem('stealth_lang', state.lang);
   updateUI();
   buildNav();
   buildDateSlider();
-  fetchAnnouncements(); // Refresh translation
+  fetchAnnouncements(); 
   renderSchedule();
 }
 
@@ -344,6 +349,7 @@ function updateUI() {
   document.getElementById('f-all').textContent = d.allFil;
   document.getElementById('f-my').textContent = d.myFil;
   document.getElementById('searchBox').placeholder = d.search;
+  document.getElementById('txt-announce').textContent = d.announce;
 }
 
 function startClock() {
@@ -366,11 +372,14 @@ function populateTimezones() {
 // ============================================================================
 function buildNav() {
   const nav = document.getElementById('mainNav');
-  nav.innerHTML = CATEGORIES.map(c => `
-    <div class="nav-tab ${state.cat === c.id ? 'active' : ''}" onclick="setCat('${c.id}')">
-      <span class="nav-icon">${c.icon}</span>
-      ${c[state.lang]}
-    </div>`).join('');
+  let html = MAIN_CATEGORIES.map(c => `<div class="nav-tab ${state.cat === c.id ? 'active' : ''}" onclick="setCat('${c.id}')">${c[state.lang]}</div>`).join('');
+  
+  html += `<select class="nav-select" onchange="setCat(this.value)">
+             <option value="" disabled selected hidden>${state.lang === 'en' ? 'OTHER ▾' : 'AUTRE ▾'}</option>`;
+  OTHER_CATEGORIES.forEach(c => { html += `<option value="${c.id}">${c[state.lang]}</option>`; });
+  html += `</select>`;
+  
+  nav.innerHTML = html;
 }
 
 function setCat(id) { state.cat = id; buildNav(); renderSchedule(); }
@@ -403,7 +412,7 @@ function buildDateSlider() {
 function setDate(d) { state.date = d; buildDateSlider(); fetchData(); }
 
 // ============================================================================
-// DATA FETCHING & TIME LOGIC
+// DATA FETCHING
 // ============================================================================
 function fetchAnnouncements() {
   const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=ANNOUNCEMENTS`;
@@ -420,7 +429,7 @@ function fetchAnnouncements() {
 
         if (msgEn) {
           document.getElementById('billboard').style.display = 'flex';
-          document.getElementById('bbMsg').textContent = state.lang === 'fr' ? msgFr : msgEn;
+          document.getElementById('bbMsg').innerHTML = state.lang === 'fr' ? msgFr : msgEn;
           if (url) {
             const link = document.getElementById('bbLink');
             link.style.display = 'inline-block';
@@ -441,9 +450,9 @@ function fetchData() {
 function fetchSheet() {
   return new Promise(resolve => {
     if (state.date !== new Date().toISOString().split('T')[0]) {
-      state.rawSheet =[]; return resolve(); // Only show sheets for "today"
+      state.rawSheet =[]; return resolve();
     }
-    const tabs =["NHL","MLB","NBA","NFL","MLS","ESPN+","TSN+","SN+","PARAMOUNT","PEACOCK","FLSP","BTN+","VICTORY+","DAZN","PPV UFC","PPV EVENTS"];
+    const tabs =["NHL","MLB","NBA","NFL","MLS","ESPN+","TSN+","SN+","PARAMOUNT","PEACOCK","FLSP","BTN+","VICTORY+","DAZN","PPV UFC","PPV EVENTS", "CBC PPV"];
     let count = 0; state.rawSheet =[];
     tabs.forEach(tab => {
       fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(tab)}`)
@@ -473,7 +482,7 @@ function fetchTSDB() {
             state.rawTsdb.push({
               league: l, away: e.strAwayTeam, home: e.strHomeTeam, aBadge: e.strAwayTeamBadge, hBadge: e.strHomeTeamBadge,
               aScore: e.intAwayScore, hScore: e.intHomeScore, status: e.strStatus,
-              utcDate: e.dateEvent, utcTime: e.strTime // Raw UTC from API
+              utcDate: e.dateEvent, utcTime: e.strTime
             });
           });
         }
@@ -482,10 +491,12 @@ function fetchTSDB() {
   });
 }
 
-// ─── TIMEZONE & REGION UTILS ───
+// ============================================================================
+// UTILS
+// ============================================================================
 function getReg(ch) {
   const c = ch.toUpperCase();
-  if(c.includes('CA ') || c.includes('TSN') || c.includes('SN+')) return 'CA';
+  if(c.includes('CA ') || c.includes('TSN') || c.includes('SN+') || c.includes('CBC')) return 'CA';
   if(c.includes('UK ')) return 'UK';
   if(c.includes('AU ')) return 'AU';
   if(c.includes('FR ')) return 'FR';
@@ -497,7 +508,8 @@ function getLocalTimeFromUTC(utcDate, utcTime, targetTz) {
   if(!utcTime) return { str: "TBD", ms: 9999999999999 };
   try {
     let d = new Date(`${utcDate}T${utcTime}Z`);
-    let str = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: targetTz }).format(d);
+    // Format clearly to show Day of week, Time, and TZ to prevent day-bleeding confusion
+    let str = new Intl.DateTimeFormat('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZoneName: 'short', timeZone: targetTz }).format(d);
     return { str: str, ms: d.getTime() };
   } catch(e) { return { str: utcTime, ms: 9999999999999 }; }
 }
@@ -511,40 +523,32 @@ function getLocalTimeFromET(timeRaw, targetTz) {
     if(ap === 'PM' && h < 12) h += 12;
     if(ap === 'AM' && h === 12) h = 0;
     
-    // Assume today, America/New_York
     let now = new Date();
     let etDateStr = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'America/New_York'}).format(now);
-    let pts = etDateStr.split('/'); // MM/DD/YYYY
-    let iso = `${pts[2]}-${pts[0]}-${pts[1]}T${('0'+h).slice(-2)}:${('0'+min).slice(-2)}:00-04:00`; // Using EDT offset approx
+    let pts = etDateStr.split('/'); 
+    let iso = `${pts[2]}-${pts[0]}-${pts[1]}T${('0'+h).slice(-2)}:${('0'+min).slice(-2)}:00-04:00`; 
     
     let d = new Date(iso);
-    let str = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: targetTz }).format(d);
+    let str = new Intl.DateTimeFormat('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZoneName: 'short', timeZone: targetTz }).format(d);
     return { str: str, ms: d.getTime() };
   } catch(e) { return { str: timeRaw, ms: 9999999999999 }; }
 }
 
 // ============================================================================
-// RENDER SCHEDULE
+// RENDER
 // ============================================================================
 function renderSchedule() {
   const container = document.getElementById('scheduleContent');
   const d = i18n[state.lang];
   const targetTz = document.getElementById('tzSelect').value;
-  const nowMs = new Date().getTime();
   
   let merged =[];
   
-  // 1. Process TSDB
+  // Process TSDB
   state.rawTsdb.forEach(te => {
     let timeData = getLocalTimeFromUTC(te.utcDate, te.utcTime, targetTz);
     
-    // Filter out games that finished > 4 hours ago (4 * 60 * 60 * 1000 = 14400000)
-    if (te.status === 'Match Finished' || te.status === 'FT') {
-        if (nowMs - timeData.ms > 14400000) return; 
-    }
-
     let matchChan = null, matchReg = 'US';
-    // Fuzzy match with sheet
     state.rawSheet.forEach(se => {
       let t = se.title.toLowerCase();
       if(te.away && te.home && (t.includes(te.away.toLowerCase().split(' ').pop()) || t.includes(te.home.toLowerCase().split(' ').pop()))) {
@@ -553,14 +557,15 @@ function renderSchedule() {
     });
     
     merged.push({
-      isTsdb: true, league: te.league, title: `${te.away} at ${te.home}`,
+      isTsdb: true, league: te.league, 
+      away: te.away, home: te.home,
       aBadge: te.aBadge, hBadge: te.hBadge, aScore: te.aScore, hScore: te.hScore,
       status: te.status, timeStr: timeData.str, ms: timeData.ms,
       channel: matchChan, region: matchReg
     });
   });
   
-  // 2. Add remaining Sheet data
+  // Remaining Sheet data
   state.rawSheet.forEach(se => {
     if(!se.used) {
       let timeData = getLocalTimeFromET(se.timeRaw, targetTz);
@@ -571,26 +576,29 @@ function renderSchedule() {
     }
   });
   
-  // 3. Filter
+  // Filter
   let regFil = document.getElementById('regionSelect').value;
   let filtered = merged.filter(ev => {
     if(regFil !== 'ALL' && ev.region !== regFil) return false;
     if(state.cat !== 'ALL') {
-      let c = CATEGORIES.find(x => x.id === state.cat);
+      let c = MAIN_CATEGORIES.find(x => x.id === state.cat) || OTHER_CATEGORIES.find(x => x.id === state.cat);
       if(c && !c.match.includes(ev.league)) return false;
     }
-    if(state.search && !(ev.title.toLowerCase().includes(state.search) || (ev.channel||'').toLowerCase().includes(state.search))) return false;
+    if(state.search) {
+      const txt = (ev.title || (ev.away + " " + ev.home) || "").toLowerCase() + " " + (ev.channel||"").toLowerCase();
+      if(!txt.includes(state.search)) return false;
+    }
     return true;
   });
   
   filtered.sort((a,b) => a.ms - b.ms);
   
   if(filtered.length === 0) {
-    container.innerHTML = `<div class="empty-state"><h2>${d.noEvents}</h2></div>`;
+    container.innerHTML = `<div class="status-msg">${d.noEvents}</div>`;
     return;
   }
   
-  // 4. Render
+  // HTML Build
   let html = '';
   let curLg = '';
   
@@ -604,14 +612,34 @@ function renderSchedule() {
     let timeBoxClass = isLive ? 'time-box live' : 'time-box';
     let timeBoxText = isLive ? 'LIVE' : ev.timeStr;
     
-    let badgeHtml = '';
-    if(ev.isTsdb && ev.aBadge) {
-      badgeHtml = `<img src="${ev.aBadge}"><img src="${ev.hBadge}">`;
-    }
-    
+    // NULL Score Fix & Away at Home Layout
     let scoreHtml = '';
-    if(ev.isTsdb && (isLive || ev.status === 'Match Finished' || ev.status === 'FT')) {
-      scoreHtml = `<span style="color:var(--primary-blue); font-weight:900; font-size:16px; margin-left:10px;">${ev.aScore} - ${ev.hScore}</span>`;
+    let matchContent = '';
+    
+    if (ev.isTsdb) {
+        let aS = ev.aScore !== null ? ev.aScore : '0';
+        let hS = ev.hScore !== null ? ev.hScore : '0';
+        
+        if (ev.status && ev.status !== 'Not Started' && ev.status !== 'NS') {
+            scoreHtml = `<span class="score-text">${aS} - ${hS}</span>`;
+        } else {
+            scoreHtml = `<span class="vs-text"> AT </span>`;
+        }
+        
+        let aLogo = ev.aBadge ? `<img src="${ev.aBadge}" class="team-logo">` : '';
+        let hLogo = ev.hBadge ? `<img src="${ev.hBadge}" class="team-logo">` : '';
+        
+        matchContent = `
+            <div class="team-wrap">
+                ${aLogo} <span>${ev.away}</span>
+            </div>
+            ${scoreHtml}
+            <div class="team-wrap">
+                <span>${ev.home}</span> ${hLogo}
+            </div>
+        `;
+    } else {
+        matchContent = `<div class="team-wrap"><span>${ev.title}</span></div>`;
     }
     
     let chanHtml = ev.channel 
@@ -624,8 +652,7 @@ function renderSchedule() {
         <div class="${timeBoxClass}">${timeBoxText}</div>
       </div>
       <div class="match-col">
-        <div class="match-title">${badgeHtml} ${ev.title} ${scoreHtml}</div>
-        <div class="league-name">${ev.league}</div>
+        <div class="matchup">${matchContent}</div>
       </div>
       <div class="chan-col">
         ${chanHtml}
